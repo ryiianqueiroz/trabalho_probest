@@ -1,22 +1,28 @@
 import "../styles/form.css";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 function Form() {
-  const [formData, setFormData] = useState({
-    Álcool: "",
-    Ácido_Málico: "",
-    Cinza: "",
-    Alcalinidade_das_Cinzas: "",
-    Magnésio: "",
-    Fenóis_Totais: "",
-    Flavonoides: "",
-    Fenois_não_Flavonoides: "",
-    Intensidade_Cor: "",
-    Matiz: "",
-    OD280_OD315_Vinhos_Diluídos: "",
-    Prolina: "",
-  });
+  const fieldLabels = {
+    alcool: "Álcool",
+    acidoMalico: "Ácido Málico",
+    cinza: "Cinza",
+    alcalinidadeCinzas: "Alcalinidade das Cinzas",
+    magnesio: "Magnésio",
+    fenoisTotais: "Fenóis Totais",
+    flavonoides: "Flavonoides",
+    fenoisNaoFlavonoides: "Fenóis não Flavonoides",
+    intensidadeCor: "Intensidade da Cor",
+    matiz: "Matiz",
+    vinhosDiluidos: "Vinhos Diluídos",
+    prolina: "Prolina",
+  };
+
+  const [formData, setFormData] = useState(
+    Object.keys(fieldLabels).reduce((acc, key) => {
+      acc[key] = "";
+      return acc;
+    }, {})
+  );
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,31 +30,21 @@ function Form() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
+    const formattedData = Object.fromEntries(
+      Object.entries(formData).map(([key, value]) => [key, parseFloat(value)])
+    );
+
     const response = await fetch("https://back-probest.onrender.com/predict/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        Álcool: parseFloat(formData.Álcool),
-        Ácido_Málico: parseFloat(formData.Ácido_Málico),
-        Cinza: parseFloat(formData.Cinza),
-        Alcalinidade_das_Cinzas: parseFloat(formData.Alcalinidade_das_Cinzas),
-        Magnésio: parseFloat(formData.Magnésio),
-        Fenóis_Totais: parseFloat(formData.Fenóis_Totais),
-        Flavonoides: parseFloat(formData.Flavonoides),
-        Fenois_não_Flavonoides: parseFloat(formData.Fenois_não_Flavonoides),
-        Intensidade_Cor: parseFloat(formData.Intensidade_Cor),
-        Matiz: parseFloat(formData.Matiz),
-        OD280_OD315_Vinhos_Diluídos: parseFloat(formData.OD280_OD315_Vinhos_Diluídos),
-        Prolina: parseFloat(formData.Prolina),
-      }),
+      body: JSON.stringify(formattedData),
     });
-  
+
     const data = await response.json();
-    console.log("Resposta da API:", data); // Exibir dados no console
+    console.log("Resposta da API:", data);
     console.log("Resultado da previsão:", data.prediction);
   };
-  
 
   useEffect(() => {
     const fetchPredict = async () => {
@@ -60,27 +56,31 @@ function Form() {
         console.error("Erro ao fazer GET /predict:", error);
       }
     };
-  
+
     fetchPredict();
   }, []);
 
   return (
-    <form onSubmit={handleSubmit}>
-      {Object.keys(formData).map((key) => (
-        <div key={key}>
-          <label>{key}: </label>
-          <input
-            type="number"
-            name={key}
-            value={formData[key]} // Corrigido para usar o estado
-            onChange={handleChange}
-            required
-          />
-        </div>
-      ))}
-
-      <button type="submit">Enviar</button>
-    </form>
+    <div className="form-container">
+      <form onSubmit={handleSubmit} className="styled-form">
+        {Object.keys(fieldLabels).map((key) => (
+          <div key={key} className="form-group">
+            <label className="form-label">{fieldLabels[key]}:</label>
+            <input
+              type="number"
+              name={key}
+              value={formData[key]}
+              onChange={handleChange}
+              required
+              className="form-input"
+            />
+          </div>
+        ))}
+        <button type="submit" className="submit-button">
+          Enviar
+        </button>
+      </form>
+    </div>
   );
 }
 
