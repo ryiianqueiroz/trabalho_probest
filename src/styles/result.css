@@ -1,0 +1,11 @@
+.result-div{
+    background-color: white;
+    width: 300px;
+    height: auto;
+    padding: 15px;
+    border-radius: 100px;
+    margin-left: 50px;
+    font-size: 0.7rem;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

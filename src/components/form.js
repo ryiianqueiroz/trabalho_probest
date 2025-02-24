@@ -1,7 +1,7 @@
 import "../styles/form.css";
 import { useState, useEffect } from "react";
 
-function Form() {
+function Form({resultado, classe}) {
   const fieldLabels = {
     alcool: "Álcool",
     acidoMalico: "Ácido Málico",
@@ -44,6 +44,9 @@ function Form() {
     const data = await response.json();
     console.log("Resposta da API:", data);
     console.log("Resultado da previsão:", data.prediction);
+
+    resultado(true)
+    classe(data.prediction)
   };
 
   useEffect(() => {
