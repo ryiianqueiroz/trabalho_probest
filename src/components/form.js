@@ -15,6 +15,7 @@ function Form({resultado, classe}) {
     matiz: "Matiz",
     vinhosDiluidos: "Vinhos Diluídos",
     prolina: "Prolina",
+    proantocianinas: "Proantocianinas"
   };
 
   const [formData, setFormData] = useState(
