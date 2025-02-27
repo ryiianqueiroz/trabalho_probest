@@ -11,11 +11,11 @@ function Form({resultado, classe}) {
     fenoisTotais: "Fenóis Totais",
     flavonoides: "Flavonoides",
     fenoisNaoFlavonoides: "Fenóis não Flavonoides",
+    proantocianinas: "Proantocianinas",
     intensidadeCor: "Intensidade da Cor",
     matiz: "Matiz",
     vinhosDiluidos: "Vinhos Diluídos",
-    prolina: "Prolina",
-    proantocianinas: "Proantocianinas"
+    prolina: "Prolina"
   };
 
   const [formData, setFormData] = useState(
